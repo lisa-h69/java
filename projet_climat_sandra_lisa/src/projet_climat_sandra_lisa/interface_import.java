@@ -22,26 +22,21 @@ import java.util.Scanner;
 class Interface_import extends JFrame implements ActionListener{
 	Graph graph_twitter = new SingleGraph("graphe des twittos");
 	
-	//affichage de la fenetre
-	public static void main(String[] args){       
-		Interface_import fenetre = new Interface_import();
-	 }       
-
-	//importation des données
+	//importation des donnÃ©es
 	public Interface_import(){
 	  	System.out.println("ouverture de la fenetre");
-	    this.setTitle("Ma fenêtre Java");
+	    this.setTitle("Ma fenÃªtre Java");
 	    this.setSize(400, 200);
 	    this.setLocationRelativeTo(null);
 	    this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);             
 	    
 	    //Instanciation d'un objet JPanel
 	    JPanel pan = new JPanel();
-	    //On prévient notre JFrame que notre JPanel sera son content pan
+	    //On prÃ©vient notre JFrame que notre JPanel sera son content pan
 	    this.setContentPane(pan);
 	    
 	    // ----- Pour le label
-	    JLabel label = new JLabel("Sélectionnez votre fichier texte : ");
+	    JLabel label = new JLabel("SÃ©lectionnez votre fichier texte : ");
 		pan.add(label);
 	    
 	 // ----- Pour le bouton Chargement
@@ -58,19 +53,19 @@ class Interface_import extends JFrame implements ActionListener{
 		  
 		    /* init du filechooser */
 		    JFileChooser fc = new JFileChooser();
-		    /* affichage du dialog et test si le bouton ok est pressé */
+		    /* affichage du dialog et test si le bouton ok est pressÃ© */
 		    if (fc.showOpenDialog(this) == JFileChooser.APPROVE_OPTION)
 		    	try {
 		    		System.out.println("Chargement en cours...");
 
 		    	    this.setVisible(false);
 		    		
-		    		//chargement du fichier sélectionné
+		    		//chargement du fichier sÃ©lectionnÃ©
 		    		File fichier_climat = new File(fc.getSelectedFile().getAbsolutePath());
 		    		
 		    		Scanner sc = new Scanner(fichier_climat);
 		    		
-		    		// Création des listes des urilisateurs et de leur poids
+		    		// CrÃ©ation des listes des urilisateurs et de leur poids
 		    		List<String> users = new ArrayList<>();
 		    		List<Integer> poids = new ArrayList<>();
 		    		
@@ -84,10 +79,10 @@ class Interface_import extends JFrame implements ActionListener{
 		    			int x = 0;
 		    			int y = 0;
 		    			
-		    			//on passe à la ligne suivante
+		    			//on passe Ã  la ligne suivante
 		    			String line = sc.nextLine();
 		    			
-		    			//separation des données selon la tabulation
+		    			//separation des donnÃ©es selon la tabulation
 		    			String[] data = line.split("	");
 		    			
 		    			//reinitialisation de la ligne
@@ -98,12 +93,12 @@ class Interface_import extends JFrame implements ActionListener{
 		    				ligne.add(un_element);
 		    			}
 		    			
-		    			//si le nombre de param =4, on rajoute pour le retweet un élément vide
+		    			//si le nombre de param =4, on rajoute pour le retweet un Ã©lÃ©ment vide
 		    			if (data.length==4) {
 			    			ligne.add(" ");
 		    			} 
 		    			
-		    			// On verifie si le pseudo twitter est deja enregistré ou non
+		    			// On verifie si le pseudo twitter est deja enregistrÃ© ou non
 		    			for (int i = 0; i < users.size(); i++) {
 		    				if (Objects.equals(users.get(i),ligne.get(4))) {
 		    					x = i;
@@ -113,49 +108,49 @@ class Interface_import extends JFrame implements ActionListener{
 		    				}
 		    			}
 		    			
-		    			// Si le nom n'est pas déjà present, on l'ajoute, sinon on lui met un poids +1
+		    			// Si le nom n'est pas dÃ©jÃ  present, on l'ajoute, sinon on lui met un poids +1
 		    			if (x == 0 && ligne.get(4) != " " && w == 0) {
-		    				//colonne des utilisateurs qui ont été retweetés
+		    				//colonne des utilisateurs qui ont Ã©tÃ© retweetÃ©s
 		    				users.add(ligne.get(4));
 		    				poids.add(1);
-		    				//colonne des utilisateurs qui ont tweetté
+		    				//colonne des utilisateurs qui ont tweettÃ©
 		    				users.add(ligne.get(1));
 		    				poids.add(1);
 		    			}else if (x == 0 && ligne.get(4) != " " && w != 0){
-		    				//colonne des utilisateurs qui ont été retweetés
+		    				//colonne des utilisateurs qui ont Ã©tÃ© retweetÃ©s
 		    				users.add(ligne.get(4));
 		    				poids.add(1);
-		    				//colonne des utilisateurs qui ont tweetté
+		    				//colonne des utilisateurs qui ont tweettÃ©
 		    				y = poids.get(w);
 		    				y++;
 		    				poids.set(w,y);
 		    			}else if(x != 0 && ligne.get(4) != " " && w == 0) {
-		    				//colonne des utilisateurs qui ont été retweetés
+		    				//colonne des utilisateurs qui ont Ã©tÃ© retweetÃ©s
 		    				y = poids.get(x);
 		    				y++;
 		    				poids.set(x,y); 
-		    				//colonne des utilisateurs qui ont tweetté
+		    				//colonne des utilisateurs qui ont tweettÃ©
 		    				users.add(ligne.get(1));
 		    				poids.add(1);  				
 		    			}else if (ligne.get(4) != " ") {
-		    				//colonne des utilisateurs qui ont été retweetés
+		    				//colonne des utilisateurs qui ont Ã©tÃ© retweetÃ©s
 		    				y = poids.get(x);
 		    				y++;
 		    				poids.set(x,y);
-		    				//colonne des utilisateurs qui ont tweetté
+		    				//colonne des utilisateurs qui ont tweettÃ©
 		    				y = poids.get(w);
 		    				y++;
 		    				poids.set(w,y);
 		    			}
 		    			   			
-		    			//passage à la création du graphe
+		    			//passage Ã  la crÃ©ation du graphe
 		    			Graphe donnees_ligne = new Graphe();
 		    			graphe_final = donnees_ligne.Creation_graphe(ligne,graph_twitter);			    			
 		    		}
 
 		    		
-		    		System.out.println("chargement terminé");
-		    		// attribution des noms à leur sommet
+		    		System.out.println("chargement terminÃ©");
+		    		// attribution des noms Ã  leur sommet
 		    	    for (Node node : graphe_final) {
 		    	        node.addAttribute("ui.label", node.getId());
 		    	    }
@@ -181,11 +176,11 @@ class Interface_import extends JFrame implements ActionListener{
 		    
 		    //Instanciation d'un objet JPanel
 		    JPanel resu = new JPanel();
-		    //On prévient notre JFrame que notre JPanel sera son content pane
+		    //On prÃ©vient notre JFrame que notre JPanel sera son content pane
 		    this.setContentPane(resu);
 		    
-		    // ----- affichage des différents résultats
-		    JLabel label = new JLabel("Voici les différents résultats : ");
+		    // ----- affichage des diffÃ©rents rÃ©sultats
+		    JLabel label = new JLabel("Voici les diffÃ©rents rÃ©sultats : ");
 		    resu.add(label);
 
 		    JLabel resu1 = new JLabel("Le nombre de sommets est de  : " + result.get(0)+ " \r\n");
@@ -194,7 +189,7 @@ class Interface_import extends JFrame implements ActionListener{
 		    JLabel resu2 = new JLabel("Le nombre d'aretes est de  : " + result.get(1) + " \r\n");
 		    resu.add(resu2);
 
-		    JLabel resu3 = new JLabel("Le degré moyen est de : " + result.get(2));
+		    JLabel resu3 = new JLabel("Le degrÃ© moyen est de : " + result.get(2));
 		    resu.add(resu3);
 		    
 		    
